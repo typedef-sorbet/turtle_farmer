@@ -99,7 +99,7 @@ function perform_farm_run()
       -- Is there a mature crop here? If so, dig it.
       local block_seen, seen_block = turtle.inspect()
 
-      if seen_block.name == crop_to_harvest and seen_block.age == 7 then
+      if seen_block.name == crop_to_harvest and seen_block.state.age == 7 then
         turtle.dig("right")
       end
 
