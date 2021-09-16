@@ -18,7 +18,7 @@ farm_length = 999
 
 -- Detection functions
 function at_end()
-  return start_blocks[turtle.inspectDown().name] ~= nil and end_blocks[turtle.inspectDown().name] ~= nil
+  return start_blocks[turtle.inspectDown().name] ~= nil or end_blocks[turtle.inspectDown().name] ~= nil
 end
 
 -- Movement functions
