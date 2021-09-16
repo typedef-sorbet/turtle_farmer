@@ -28,12 +28,12 @@ function do_turn(block, is_in_reverse)
   else
     turtle.turnRight()
   end
-  sleep(2)
+  sleep(0.5)
 end
 
 function move_forward()
   turtle.forward()
-  sleep(2)
+  sleep(0.5)
 end
 
 -- TODO need to put select_item_with function here
@@ -67,6 +67,10 @@ function perform_farm_run()
   -- Move forward once to get started.
   move_forward()
   
+  -- Grab the current block name.
+    block_data = turtle.inspectDown()
+    current_block = block_data.name
+  
   -- Start the farm loop.
   while not at_end(current_block) do
     -- Grab the current block name.
@@ -77,13 +81,13 @@ function perform_farm_run()
     if current_block == left_turn_block or current_block == right_turn_block then
       -- Perform a turn.
       do_turn(current_block, is_in_reverse)
-      sleep(2)
+      sleep(0.5)
     else
       -- Otherwise, do some farming.
 
       -- First, check the left side.
       turtle.turnLeft()
-      sleep(2)
+      sleep(0.5)
 
       -- Is there a mature crop here? If so, dig it.
       local block_seen, seen_block = turtle.inspect()
@@ -104,9 +108,9 @@ function perform_farm_run()
 
       -- Next, check the right side.
       turtle.turnRight()
-      sleep(2)
+      sleep(0.5)
       turtle.turnRight()
-      sleep(2)
+      sleep(0.5)
 
       -- Is there a mature crop here? If so, dig it.
       local block_seen, seen_block = turtle.inspect()
@@ -140,9 +144,9 @@ function perform_farm_run()
 
   -- Do a 180 to reset position.
   turtle.turnLeft()
-  sleep(2)
+  sleep(0.5)
   turtle.turnLeft()
-  sleep(2)
+  sleep(0.5)
 
   -- Done!
 end
