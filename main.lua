@@ -28,6 +28,12 @@ function do_turn(block, is_in_reverse)
   else
     turtle.turnRight()
   end
+  sleep(0.4)
+end
+
+function move_forward()
+  turtle.forward()
+  sleep(0.4)
 end
 
 -- TODO need to put select_item_with function here
@@ -59,7 +65,7 @@ function perform_farm_run()
   local is_in_reverse = end_blocks[current_block] ~= nil
 
   -- Move forward once to get started.
-  turtle.forward()
+  move_forward()
   
   -- Start the farm loop.
   while not at_end(current_block) do
@@ -71,16 +77,18 @@ function perform_farm_run()
     if current_block == left_turn_block or current_block == right_turn_block then
       -- Perform a turn.
       do_turn(current_block, is_in_reverse)
+      sleep(0.4)
     else
       -- Otherwise, do some farming.
 
       -- First, check the left side.
       turtle.turnLeft()
+      sleep(0.4)
 
       -- Is there a mature crop here? If so, dig it.
       local block_seen, seen_block = turtle.inspect()
 
-      if seen_block.name == crop_to_harvest and seen_block.age == 7 then
+      if seen_block.name == crop_to_harvest and seen_block.state.age == 7 then
         turtle.dig("left")
       end
 
@@ -96,12 +104,14 @@ function perform_farm_run()
 
       -- Next, check the right side.
       turtle.turnRight()
+      sleep(0.4)
       turtle.turnRight()
+      sleep(0.4)
 
       -- Is there a mature crop here? If so, dig it.
       local block_seen, seen_block = turtle.inspect()
 
-      if seen_block.name == crop_to_harvest and seen_block.state.age == 7 then
+      if seen_block.name == crop_to_harvest and seen_block.state.state.age == 7 then
         turtle.dig("right")
       end
 
@@ -117,7 +127,7 @@ function perform_farm_run()
     end
 
     -- Lastly, move forward.
-    turtle.forward()
+    move_forward()
   end
 
   -- Dump all of the harvested crops into the chest behind the turtle until either we run out, or the chest becomes full.
@@ -130,7 +140,9 @@ function perform_farm_run()
 
   -- Do a 180 to reset position.
   turtle.turnLeft()
+  sleep(0.4)
   turtle.turnLeft()
+  sleep(0.4)
 
   -- Done!
 end
