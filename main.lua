@@ -79,7 +79,7 @@ function perform_farm_run()
       local block_seen, seen_block = turtle.inspect()
 
       if seen_block.name == crop_to_harvest and seen_block.age == 7 then
-        turtle.dig("right")
+        turtle.dig("left")
       end
 
       -- Check the space again. Is it empty?
