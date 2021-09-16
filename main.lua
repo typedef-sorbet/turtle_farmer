@@ -5,20 +5,20 @@ right_turn_block = "minecraft:diorite"
 -- Defines the blocks that indicate the start of a farm path. Start blocks also indicate the type of seed that should be planted in the farm.
 start_blocks = {}
 
-start_blocks["minecraft:birch_planks"] = {seed="minecraft:grass_seeds", crop="minecraft:wheat"}
+start_blocks["minecraft:birch_planks"] = {seed="minecraft:wheat_seeds", crop="minecraft:wheat"}
 
 -- Defines the blocks that indicate the end of a farm path. End blocks also indicate the type of seed that should be planted in the farm.
 end_blocks = {}
 
-end_blocks["minecraft:birch_stairs"] = {seed="minecraft:grass_seeds", crop="minecraft:wheat"}
+end_blocks["minecraft:birch_stairs"] = {seed="minecraft:wheat_seeds", crop="minecraft:wheat"}
 
 -- Defines the total path length of the farm path.
 -- This should be filled in when the farm is built.
 farm_length = 999
 
 -- Detection functions
-function at_end()
-  return start_blocks[turtle.inspectDown().name] ~= nil or end_blocks[turtle.inspectDown().name] ~= nil
+function at_end(block)
+  return start_blocks[block] ~= nil or end_blocks[block] ~= nil
 end
 
 -- Movement functions
@@ -36,13 +36,14 @@ end
 function perform_farm_run()
   -- First, check to see if we even have enough fuel to perform the run.
   -- If we don't, log an error and return right away.
-  if turtle.getFuelLevel() != "unlimited" or turtle.getFuelLevel() < farm_length then
+  if turtle.getFuelLevel() ~= "unlimited" and turtle.getFuelLevel() < farm_length then
     print("Error: insufficient fuel to complete farm run (Have " .. turtle.getFuelLevel() .. ", need " .. farm_length .. ")")
     return false
   end
 
   -- Next, check to see what seed type we should be using.
-  local current_block = turtle.inspectDown().name
+  local _, block_data = turtle.inspectDown()
+  local current_block = block_data.name
   local seed_to_plant = nil
   local crop_to_harvest = nil
   
@@ -61,9 +62,10 @@ function perform_farm_run()
   turtle.forward()
   
   -- Start the farm loop.
-  while not at_end() do
+  while not at_end(current_block) do
     -- Grab the current block name.
-    current_block = turtle.inspectDown().name
+    block_data = turtle.inspectDown()
+    current_block = block_data.name
 
     -- Are we on a special turn block, or just on a regular block?
     if current_block == left_turn_block or current_block == right_turn_block then
