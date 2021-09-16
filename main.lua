@@ -43,8 +43,16 @@ function perform_farm_run()
 
   -- Next, check to see what seed type we should be using.
   local current_block = turtle.inspectDown().name
-  local seed_to_plant = start_blocks[current_block] ~= nil and start_blocks[current_block].seed or end_blocks[current_block].seed
-  local crop_to_harvest = start_blocks[current_block] ~= nil and start_blocks[current_block].crop or end_blocks[current_block].crop
+  local seed_to_plant = nil
+  local crop_to_harvest = nil
+  
+  if start_blocks[current_block] ~= nil then
+    seed_to_plant = start_blocks[current_block].seed
+    crop_to_harvest = start_blocks[current_block].crop
+  else
+    seed_to_plant = end_blocks[current_block].seed
+    crop_to_harvest = end_blocks[current_block].crop
+  end
 
   -- Are we starting from the start block, or the end block?
   local is_in_reverse = end_blocks[current_block] ~= nil
